@@ -10,6 +10,7 @@ The data for this project is in the file seabirds.xls, in particular the sheets 
 1.3.1 Some cleaning hints
 Do we need all the variables for this data?
 You’ll need to join the ship data to the bird record data
+
 1.3.2 Analysis questions
 For each question where we ask for bird names, give the bird’s common name, scientific name and species abbreviation.
 
@@ -18,6 +19,14 @@ Which bird had the highest total count?
 Which bird had the highest total count above a latitude of -30?
 How many different types of birds were only ever seen in groups of 1?
 How many penguins were seen? (Hint: there are many types of penguin)
+
+## Further areas to explore
+Interesting variables to keep: ship_data$longtidue, ship_data$observer, age and sex, ship_data$"BIRDCOUNT" 10 MIN = full 10min count  PART = partial 10min count or casual observation, ship_data$season, ship_data$ship_activity
+
+## Data needed
+In data: bird common name, bird scientific name, species abbreviation,
+latitude, group_size (COUNT)
+To creat: is_penguin, num_sightings (equal to num_records),
 
 # Overview
 

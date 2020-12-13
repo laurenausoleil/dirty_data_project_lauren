@@ -1,0 +1,14 @@
+---
+title: "To Do"
+output: html_notebook
+---
+
+* Answer questions
+
+* Readme
+
+* Read in only the necessary variables in data_cleaning_script
+
+* Clean names on read in
+
+* Any extra analysis

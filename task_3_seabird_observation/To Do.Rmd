@@ -11,4 +11,8 @@ output: html_notebook
 
 * Clean names on read in
 
+* Remove subdivisions from common name and species names (started in cleaning)
+
+* Better answer seabird_data - Which bird had the most individual sightings?
+
 * Any extra analysis

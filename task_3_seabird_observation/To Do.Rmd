@@ -3,16 +3,12 @@ title: "To Do"
 output: html_notebook
 ---
 
-* Answer questions
-
 * Readme
 
 * Read in only the necessary variables in data_cleaning_script
 
 * Clean names on read in
 
-* Remove subdivisions from common name and species names (started in cleaning)
-
-* Better answer seabird_data - Which bird had the most individual sightings?
+* Neaten up data cleaning script and seabird_analysis
 
 * Any extra analysis

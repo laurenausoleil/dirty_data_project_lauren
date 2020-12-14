@@ -13,7 +13,7 @@ seabird_data <- read_csv(here("clean_data/seabird_data_clean"))
 ```
 
 # Which bird had the most individual sightings?
-The Wandering Albatross sensu lato, 
+The Wandering Albatross 
 
 ```{r}
 seabird_data %>% 

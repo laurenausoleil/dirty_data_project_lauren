@@ -58,12 +58,13 @@ bird_data <- bird_data %>%
 # --------------
 
 # Remove all subdivision information from name fields plus unidentified and sensu lato (Latin for broadly speaking) which are not relevant to our analysis.
-subdivision_pattern <- c("AD", "SUBAD", "SUB", "PL1", "PL2", "PL3", "PL4", "PL5", "IMM", "JUV", " F ", " M ", "DRK", "INT", "LGHT", "WHITE", "\\([Uu]nidentified\\)", "[Ss]ensu lato")
+subdivision_pattern <- c(" AD", " SUBAD", " SUB", " PL1", " PL2", " PL3", " PL4", " PL5", " IMM", " JUV", " F ", " M ", " DRK", " INT", " LGHT", " WHITE", "\\([Uu]nidentified\\)", "[Ss]ensu lato")
 
 for(i in 1:length(subdivision_pattern)){
   bird_data <- bird_data %>% 
     mutate(common_name = str_remove_all(common_name, subdivision_pattern[[i]]),
-           scientific_name = str_remove_all(scientific_name, subdivision_pattern[[i]])
+           scientific_name = str_remove_all(scientific_name, subdivision_pattern[[i]]),
+           species_abbreviation = str_remove_all(species_abbreviation, subdivision_pattern[[i]])
     )
 }
 
@@ -78,3 +79,4 @@ bird_data <- bird_data %>%
 
 bird_data %>% 
   write_csv(here("clean_data/seabird_data_clean"))
+

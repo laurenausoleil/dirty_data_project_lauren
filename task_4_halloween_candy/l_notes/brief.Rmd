@@ -1,0 +1,49 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# 1.4.1 Some cleaning hints
+You’ll need to combine these three datasets together.
+The column country is particularly messy, you will likely need to do some ‘hard coding’ here!
+
+# 1.4.2 Analysis questions
+What is the total number of candy ratings given across the three years. (number of candy ratings, not number of raters. Don’t count missing values)
+What was the average age of people who are going out trick or treating and the average age of people 3. not going trick or treating?
+For each of joy, despair and meh, which candy bar revived the most of these ratings?
+How many people rated Starburst as despair?
+For the next three questions, count despair as -1, joy as +1 and meh as 0.
+
+What was the most popular candy bar by this rating system for each gender in the dataset?
+What was the most popular candy bar in each year?
+What was the most popular candy bar by this rating for people in US, Canada, UK and all other countries?
+
+
+# Overview
+
+Cleaning will never happen in isolation and will be the first step in the process of answering questions with data - whether that be exploratory analysis or building a predicitve model. This is why as part of the project, we will ask you to answer a few questions with the data: let these questions guide the purpose of your cleaning. So, for example, not every variable in each dataset needs to be cleaned, just those required as part of the subsequent analysis to answer the questions.
+
+The clean data should be in tidy format as covered in week 3.
+Follow the style guide covered in week 1 for both code style, and naming data and variables.
+Look over the reproducibility lesson from week 1 again to help you think about how to organise your project. Following the steps there to ensure reproducibility and clarity for review, and recap the hints and tips for writing documentation.
+While the datasets in all of these projects are pretty small (and so processing power won’t be an issue), do think about efficient ways of answering the questions. By this we don’t necessarily mean that you should write code that runs as fast as possible (as this sometimes can make code more difficult to read), but rather look to avoid overcomplicating the code, and any ‘hard coding’.
+
+# Markdown/Readme
+
+For your chosen task to present we would like you to write a markdown report document describing your project. This document should include:
+
+A brief introduction to the dataset
+A list of any assumptions you have made
+The steps you took to clean the data (you don’t need to write out in detail every step, but a combination of commented code chunks with surrounding overall explanations would be great).
+The answers to the questions presented in the task brief
+Any other interesting analyses or conclusions you come across.
+
+# Structure
+We would like your folder structure in the project for each task to be as follows:
+* raw_data
+* data_cleaning_scripts
+* clean_data
+* documentation_and_analysis
+The raw_data folder will contain the unprocessed data from the de4_classnotes folder.
+The data_cleaning_scripts folder will contain your code (clear & commented) used to clean the data. This should be a .R script. At the end of the script, you should write your cleaned dataset to a .csv file in the clean_data folder.
+You should then have a separate script in the documentation_and_analysis folder containing your analysis code and/or markdown documentation. This will be a .Rmd file that will take as input the data in your clean_data folder.

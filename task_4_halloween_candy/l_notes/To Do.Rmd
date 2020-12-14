@@ -1,0 +1,18 @@
+---
+title: "To Do"
+output: html_notebook
+---
+
+* Explore data
+
+* Read in data
+
+* Clean and join data
+
+* Analysis questions
+
+* Readme
+
+* Neaten up data cleaning script and seabird_analysis
+
+* Any extra analysis

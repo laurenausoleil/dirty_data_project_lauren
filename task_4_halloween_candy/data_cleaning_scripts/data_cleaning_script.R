@@ -46,22 +46,48 @@ candy_2017 <- candy_2017 %>%
          `Q4: COUNTRY`, 
          candy,
          reaction)
-  
+
 # --------------
-# Clean up value columns for candy bars to enable join
+# Clean up variable names to enable join
 # --------------
 
+candy_2015 <- candy_2015 %>% 
+  rename(
+    "age" = "How old are you?",
+    "treating" = "Are you going actually going trick or treating yourself?",
+  )
+
+candy_2016 <- candy_2016 %>% 
+  rename(
+    "age" = "",
+    "treating" = "Are you going actually going trick or treating yourself?",
+    "gender" = "Your gender:",
+    "country" = "Which country do you live in?"
+  )
+
+candy_2017 <- candy_2017 %>% 
+  rename(
+    "age" = "Q3: AGE",
+    "treating" = "Q1: GOING OUT?",
+    "gender" = "Q2: GENDER",
+    "country" = "Q4: COUNTRY"
+  )
+
+# --------------
+# Clean up candy values
+# --------------
+
+# Remove square brackets from candy name in 2015 and 2016
 candy_2015 <- candy_2015 %>% 
   mutate(
     candy = str_remove_all(candy, "\\["),
     candy = str_remove_all(candy, "\\]")
   )
-
-test <- candy_2016 %>% 
+candy_2016 <- candy_2016 %>% 
   mutate(
-    candy = str_remove_all(candy, )
+    candy = str_remove_all(candy, "\\["),
+    candy = str_remove_all(candy, "\\]")
   )
-
 
 # --------------
 # Joining tables
@@ -69,17 +95,8 @@ test <- candy_2016 %>%
 
 
 # --------------
-# Cleaning variable names for best practice and readability
+# Clean country column values
 # --------------
-
-bird_data <- bird_data %>% 
-  clean_names() %>% 
-  rename(
-    "id" = "record_id",
-    "common_name" = "species_common_name_taxon_age_sex_plumage_phase",
-    "scientific_name" = "species_scientific_name_taxon_age_sex_plumage_phase",
-    "latitude" = "lat"
-  )
 
 
 # --------------

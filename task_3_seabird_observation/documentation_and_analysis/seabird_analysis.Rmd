@@ -13,18 +13,82 @@ seabird_data <- read_csv(here("clean_data/seabird_data_clean"))
 ```
 
 # Which bird had the most individual sightings?
-The Wandering Albatross 
+
+## Interpreted as: Which bird had the highest occurence of sightings?
+The Wandering Albatross, or Diomedea antipodensis, with the species abbreviation DIOANTEXU has the highest occurence of sightings, being recorded on 11,293 occasions.
+
 
 ```{r}
 seabird_data %>% 
   select(species_abbreviation, common_name, scientific_name) %>% 
   group_by(species_abbreviation) %>% 
+# Create a column for number of sightings
   mutate(num_sightings = n()) %>% 
+# Ungruoup so we can see full bird name and arrange with the greatest number of sightings first.
   arrange(desc(num_sightings)) %>% 
   ungroup()
 ```
 
 # Which bird had the highest total count?
+
+The short-tailed shearwater, or Puffinus tenuirostris, abbreviated to PUFTEN, had the greatest total number of sightings at 982,553 birds spotted, due to regularly being spotted in groups of thousands of birds.
+
+```{r}
+seabird_data %>% 
+  select(species_abbreviation, common_name, scientific_name, count) %>% 
+  group_by(species_abbreviation) %>% 
+# Create a columns totalling the number of birds seen in all sightings
+  mutate(num_seen = sum(count)) %>% 
+  arrange(desc(num_seen), desc(count)) %>% 
+  ungroup()
+```
+
 # Which bird had the highest total count above a latitude of -30?
+Further North than a latitude of -30 the bird seen the most was the wedge-tailed shearwater, or Puffinus Pacificus, seen 855 times in total.
+There are only 105 recorded sightings of birds further North then -30.
+
+```{r}
+seabird_data %>% 
+  select(species_abbreviation, common_name, scientific_name, count, latitude) %>%
+# Only return results from -29 or greater
+  filter(latitude  > -30) %>% 
+  group_by(species_abbreviation) %>% 
+# Create a columns totalling the number of birds seen in all sightings
+  mutate(num_seen = sum(count)) %>% 
+  arrange(desc(num_seen), latitude)
+
+```
+
 # How many different types of birds were only ever seen in groups of 1?
+
+24 birds were only ever seen in groups of one, out of the 155 species of birds recorded.
+
+```{r}
+seabird_data %>% 
+  group_by(species_abbreviation) %>% 
+# Create an average of count for each bird type (as our lowest count is 1, a bird only ever seen alone will have a mean count of 1, any bird ever seen in a group will have a mean count greater than 1)
+  mutate(count_avg = mean(count)) %>%
+  filter(count_avg == 1) %>% 
+  group_by(species_abbreviation) %>% 
+  summarise()
+```
+```{r}
+# Finding number of bird species in dataset - 155 
+seabird_data %>% 
+  distinct(common_name)
+```
+
 # How many penguins were seen? (Hint: there are many types of penguin)
+A total of 158 penguin sightings were recorded.
+
+```{r}
+seabird_data %>% 
+  select(species_abbreviation, common_name, scientific_name, count) %>%
+# Only return results with the word penguin in the common name
+  filter(grepl("[pP]enguin", common_name)) %>%
+# Total all the numbers in the count column, i.e. the total number of penguins recorded.
+  summarise(sum(count))
+  
+```
+
+

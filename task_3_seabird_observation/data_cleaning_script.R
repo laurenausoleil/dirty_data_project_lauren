@@ -72,6 +72,12 @@ for(i in 1:length(subdivision_pattern)){
 bird_data <- bird_data %>% 
   mutate(scientific_name = str_remove_all(scientific_name, "\\/.*"))
 
+# --------------
+# Dropping records without bird sightings
+# --------------
+
+bird_data <- bird_data %>% 
+  drop_na(count)
 
 # --------------
 # Writing cleaned csv

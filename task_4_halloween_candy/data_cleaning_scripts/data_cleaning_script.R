@@ -7,37 +7,65 @@ library(readxl)
 library(janitor)
 library(here)
 
-ship_data <- read_excel("raw_data/seabirds.xls", sheet = "Ship data by record ID")
-bird_data <- read_excel("raw_data/seabirds.xls", sheet = "Bird data by record ID")
-# If reading in, please ignore error message as it is not relevant to the analysis questions
+excel_sheets("raw_data/boing-boing-candy-2015.xlsx")
+
+candy_2015 <- read_excel("raw_data/boing-boing-candy-2015.xlsx")
+candy_2016 <- read_excel("raw_data/boing-boing-candy-2016.xlsx")
+candy_2017 <- read_excel("raw_data/boing-boing-candy-2017.xlsx")
 
 # --------------
-# Removing excess variables
+# Pivot tables wider to get one row per observation
 # --------------
-# Reduce to only the variables needed for the analysis questions.
 
-bird_data <- bird_data %>% 
-  select(
-    "RECORD ID",
-    "Species common name (taxon [AGE / SEX / PLUMAGE PHASE])",
-    "Species  scientific name (taxon [AGE /SEX /  PLUMAGE PHASE])",
-    "Species abbreviation",
-    "COUNT"
+candy_2015 <- candy_2015 %>% 
+  pivot_longer(cols = 4:124, names_to = "candy", values_to = "reaction") %>% 
+# drop NAs in reaction - these will not be useful for analysis
+  drop_na(reaction) %>% 
+# Filter out questions not about candy
+  select(`How old are you?`, 
+         `Are you going actually going trick or treating yourself?`, 
+         candy, 
+         reaction)
+
+candy_2016 <- candy_2016 %>% 
+  pivot_longer(cols = 7:106, names_to = "candy", values_to = "reaction") %>% 
+  drop_na(reaction) %>% 
+  select(`How old are you?`, 
+          `Are you going actually going trick or treating yourself?`, 
+          "Your gender:", 
+          `Which country do you live in?`,
+          candy, 
+          reaction)
+
+candy_2017 <- candy_2017 %>% 
+  pivot_longer(cols = 7:109, names_to = "candy", values_to = "reaction", names_prefix = "Q6 \\| ") %>% 
+  drop_na(reaction) %>% 
+  select(`Q3: AGE`, 
+         `Q1: GOING OUT?`,
+         `Q2: GENDER`,
+         `Q4: COUNTRY`, 
+         candy,
+         reaction)
+  
+# --------------
+# Clean up value columns for candy bars to enable join
+# --------------
+
+candy_2015 <- candy_2015 %>% 
+  mutate(
+    candy = str_remove_all(candy, "\\["),
+    candy = str_remove_all(candy, "\\]")
   )
 
-ship_data <- ship_data %>% 
-  select(
-    LAT,
-    `RECORD ID`
+test <- candy_2016 %>% 
+  mutate(
+    candy = str_remove_all(candy, )
   )
+
 
 # --------------
 # Joining tables
 # --------------
-# Joining the 2 variable version of ship_data to bird_data. A left join keeps all the records from bird data allowing us to answer count questions more fully. We add the column latitude to answer the question: "Which bird had the highest total count above a latitude of -30?" set in the task.
-
-bird_data <- bird_data %>% 
-  left_join(ship_data, by = "RECORD ID", keep = FALSE)
 
 
 # --------------
@@ -53,34 +81,9 @@ bird_data <- bird_data %>%
     "latitude" = "lat"
   )
 
-# --------------
-# Removing subdivisions from species names
-# --------------
-
-# Remove all subdivision information from name fields plus unidentified and sensu lato (Latin for broadly speaking) which are not relevant to our analysis.
-subdivision_pattern <- c(" AD", " SUBAD", " SUB", " PL1", " PL2", " PL3", " PL4", " PL5", " IMM", " JUV", " F ", " M ", " DRK", " INT", " LGHT", " WHITE", "\\([Uu]nidentified\\)", "[Ss]ensu lato")
-
-for(i in 1:length(subdivision_pattern)){
-  bird_data <- bird_data %>% 
-    mutate(common_name = str_remove_all(common_name, subdivision_pattern[[i]]),
-           scientific_name = str_remove_all(scientific_name, subdivision_pattern[[i]]),
-           species_abbreviation = str_remove_all(species_abbreviation, subdivision_pattern[[i]])
-    )
-}
-
-  # Remove everything after the slash in scientific name
-bird_data <- bird_data %>% 
-  mutate(scientific_name = str_remove_all(scientific_name, "\\/.*"))
 
 # --------------
-# Dropping records without bird sightings
-# --------------
-
-bird_data <- bird_data %>% 
-  drop_na(count)
-
-# --------------
-# Writing cleaned csv
+# Write cleaned csv
 # --------------
 
 bird_data %>% 

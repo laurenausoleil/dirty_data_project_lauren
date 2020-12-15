@@ -93,11 +93,16 @@ candy_2016 <- candy_2016 %>%
 # Joining tables
 # --------------
 
+candy <- candy_2017 %>% 
+  bind_rows(candy_2016) %>% 
+  bind_rows(candy_2015)
 
 # --------------
 # Clean country column values
 # --------------
 
+candy %>% 
+  distinct("country")
 
 # --------------
 # Write cleaned csv

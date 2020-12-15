@@ -101,8 +101,53 @@ candy <- candy_2017 %>%
 # Clean country column values
 # --------------
 
-candy %>% 
-  distinct("country")
+# Edit to USA
+usa_patterns <- c(
+  # United States and misspellings of united states
+  "[Uu][a-zA-Z]+ [Ss][a-zA-Z]+",
+  # USA, us, usa, US, etc.
+  "^[Uu][Ss][a-zA-Z:punct]*",
+  # america, murica, Amerca
+  "m.+ca",
+  # U.S.A, u.s.
+  "[Uu]\\.[Ss]",
+  # u s a
+  "u s a"
+  # murrika
+)
+
+# Edit to Canada
+canada_patterns <- c(
+  "[Cc][Aa][Nn][Aa][Dd][Aa]",
+  "Canada`"
+)
+
+# Edit to UK
+uk_patterns <- c(
+  # United Kingdom and misspellings
+  "[Uu][a-zA-Z]+ [Kk][a-zA-Z]+",
+  # UK, uk, etc.
+  "^[Uu][Kk][a-zA-Z:punct]*",
+  # U.K, u.k.
+  "[Uu]\\.[Kk]",
+  # England and endland
+  "[Ee]n[a-z]land"
+)
+
+# Edit to France
+france_patterns <- c(
+  "[Ff][Rr][Aa][Nn][Cc][Ee]"
+)
+
+# Edit to Spaing
+spain_patterns <- c(
+  "[Ss]pain"
+) 
+
+clean_country_list <- c(
+  "USA", "Canada", "France", "UK", "UAE", "Mexico", "Netherlands", "Costa Rica", "Greece", "Korea", "Australia", "Japan", "Iceland", "Denmark", "Switzerland", "South Korea", "Germany", "Singapore", "Taiwan", "China", "Spain"
+)
+
 
 # --------------
 # Write cleaned csv

@@ -9,13 +9,19 @@ The column country is particularly messy, you will likely need to do some ‘har
 
 # 1.4.2 Analysis questions
 What is the total number of candy ratings given across the three years. (number of candy ratings, not number of raters. Don’t count missing values)
-What was the average age of people who are going out trick or treating and the average age of people 3. not going trick or treating?
+
+What was the average age of people who are going out trick or treating and the average age of people not going trick or treating?
+
 For each of joy, despair and meh, which candy bar revived the most of these ratings?
+
 How many people rated Starburst as despair?
+
 For the next three questions, count despair as -1, joy as +1 and meh as 0.
 
 What was the most popular candy bar by this rating system for each gender in the dataset?
+
 What was the most popular candy bar in each year?
+
 What was the most popular candy bar by this rating for people in US, Canada, UK and all other countries?
 
 

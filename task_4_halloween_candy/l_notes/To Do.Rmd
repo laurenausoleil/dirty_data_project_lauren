@@ -5,14 +5,12 @@ output: html_notebook
 
 * Explore data
 
-* Read in data
-
-* Clean and join data
+* Clean country names. (if janitor before pivot, more efficient?)
 
 * Analysis questions
 
 * Readme
 
-* Neaten up data cleaning script and seabird_analysis
+* Neaten up data cleaning script and analysis
 
 * Any extra analysis

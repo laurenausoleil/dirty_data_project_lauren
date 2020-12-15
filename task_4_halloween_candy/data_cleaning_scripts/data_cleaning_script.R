@@ -142,7 +142,11 @@ france_patterns <- c(
 # Edit to Spaing
 spain_patterns <- c(
   "[Ss]pain"
-) 
+)
+
+# --------------
+# Remove any excess/uncleaned names
+# --------------
 
 clean_country_list <- c(
   "USA", "Canada", "France", "UK", "UAE", "Mexico", "Netherlands", "Costa Rica", "Greece", "Korea", "Australia", "Japan", "Iceland", "Denmark", "Switzerland", "South Korea", "Germany", "Singapore", "Taiwan", "China", "Spain"
@@ -153,6 +157,6 @@ clean_country_list <- c(
 # Write cleaned csv
 # --------------
 
-bird_data %>% 
-  write_csv(here("clean_data/seabird_data_clean"))
+# candy %>% 
+  write_csv(here("clean_data/clean_candy_2015_to_2017"))
 

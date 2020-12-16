@@ -168,3 +168,44 @@ rated_candy %>%
 
 # Q8: What was the most popular candy bar by this rating for people in US, Canada, UK and all other countries?
 
+```{r}
+# Highest ranked US
+rated_candy %>% 
+  filter(country == "USA") %>% 
+  group_by(candy) %>% 
+  summarise(rank = sum(numeric_rating)) %>% 
+  arrange(desc(rank)) %>% 
+  head(1)
+```
+
+
+```{r}
+# Highest ranked Canada
+rated_candy %>% 
+  filter(country == "Canada") %>% 
+  group_by(candy) %>% 
+  summarise(rank = sum(numeric_rating)) %>% 
+  arrange(desc(rank)) %>% 
+  head(1)
+```
+
+```{r}
+# Highest ranked UK
+rated_candy %>% 
+  filter(country == "UK") %>% 
+  group_by(candy) %>% 
+  summarise(rank = sum(numeric_rating)) %>% 
+  arrange(desc(rank)) %>% 
+  head(1)
+```
+
+
+```{r}
+# Highest ranked All other countries
+rated_candy %>% 
+  filter(country != "UK" & country != "USA" & country != "Canada") %>% 
+  group_by(candy) %>% 
+  summarise(rank = sum(numeric_rating)) %>% 
+  arrange(desc(rank)) %>% 
+  head(1)
+```

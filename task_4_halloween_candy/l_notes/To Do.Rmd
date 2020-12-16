@@ -3,9 +3,7 @@ title: "To Do"
 output: html_notebook
 ---
 
-* Explore data
-
-* Clean country names. (if janitor before pivot, more efficient?)
+* Readme
 
 * Explore why ages are in country column
 
@@ -15,11 +13,11 @@ output: html_notebook
 
 * Remove extra questions from pivot
 
+* Remove non-candy entries from candy column
+
 * Better job cleaning ages to keep more values
 
-* Analysis questions
-
-* Readme
+* Find a more efficient way to do most popular candy by var (country, gender, year)
 
 * Neaten up data cleaning script and analysis
 

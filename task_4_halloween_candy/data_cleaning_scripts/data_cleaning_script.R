@@ -19,9 +19,9 @@ candy_2017 <- read_excel("raw_data/boing-boing-candy-2017.xlsx")
 
 candy_2015 <- candy_2015 %>% 
   pivot_longer(cols = 4:124, names_to = "candy", values_to = "reaction") %>% 
-# drop NAs in reaction - these will not be useful for analysis
+  # drop NAs in reaction - these will not be useful for analysis
   drop_na(reaction) %>% 
-# Filter out questions not about candy
+  # Filter out questions not about candy
   select(`How old are you?`, 
          `Are you going actually going trick or treating yourself?`, 
          candy, 
@@ -31,11 +31,11 @@ candy_2016 <- candy_2016 %>%
   pivot_longer(cols = 7:106, names_to = "candy", values_to = "reaction") %>% 
   drop_na(reaction) %>% 
   select(`How old are you?`, 
-          `Are you going actually going trick or treating yourself?`, 
-          "Your gender:", 
-          `Which country do you live in?`,
-          candy, 
-          reaction)
+         `Are you going actually going trick or treating yourself?`, 
+         "Your gender:", 
+         `Which country do you live in?`,
+         candy, 
+         reaction)
 
 candy_2017 <- candy_2017 %>% 
   pivot_longer(cols = 7:109, names_to = "candy", values_to = "reaction", names_prefix = "Q6 \\| ") %>% 
@@ -103,100 +103,85 @@ candy <- candy_2017 %>%
 # Clean country column values
 # --------------
 
+
+mutate(
+  test$country = if_else(
+    str_detect(test$country , usa_patterns[[i]]),
+    "USA",
+    test$country
+  )
+)
+
+test <- candy %>% 
 # Edit to USA
-usa_patterns <- c(
-  # United States and misspellings of united states
-  "[Uu][a-zA-Z]+ [Ss][a-zA-Z]+",
-  # USA, us, usa, US, etc.
-  "^[Uu][Ss][a-zA-Z:punct]*",
-  # america, murica, Amerca
-  "m.+ca",
-  # U.S.A, u.s.
-  "[Uu]\\.[Ss]",
-  # u s a
-  "u s a"
-  # murrika
-)
+  mutate(country = if_else(
+    # United States and misspellings of united states
+    str_detect(country, "[Uu][a-zA-Z]+ [Ss][a-zA-Z]+"), "USA", country),
+    # USA, us, usa, US, etc.
+    country = if_else(
+      str_detect(country, "^[Uu][Ss][a-zA-Z:punct:]*"), "USA", country),
+    # america, murica, Amerca
+    country = if_else(
+      str_detect(country, "[Mm].+ca"), "USA", country),
+    # U.S.A, u.s.
+    country = if_else(
+      str_detect(country, "[Uu]\\.[Ss]"), "USA", country),
+    # u s a
+    country = if_else(
+      str_detect(country, "[Uu] [Ss]"), "USA", country),
+    # murrika
+    # canada
+    country = if_else(
+      str_detect(country, "[Cc][Aa][Nn][Aa][Dd][Aa]"), "Canada", country),
+    country = if_else(
+      str_detect(country, "Canada`"), "Canada", country),
+    # United Kingdom and misspellings
+    country = if_else(
+      str_detect(country, "[Uu][a-zA-Z]+ [Kk][a-zA-Z]+"), "UK", country),
+    # UK, uk, etc.
+    country = if_else(
+      str_detect(country, "^[Uu][Kk][a-zA-Z:punct:]*"), "UK", country),
+    # U.K, u.k.
+    country = if_else(
+      str_detect(country, "[Uu]\\.[Kk]"), "UK", country),
+    # England and endland
+    country = if_else(
+      str_detect(country, "[Ee]n[a-z]land"), "UK", country),
+    # France
+    country = if_else(
+      str_detect(country, "[Ff][Rr][Aa][Nn][Cc][Ee]"), "France", country),
+    # Spain
+    country = if_else(
+      str_detect(country, "[Ss]pain"), "Spain", country),
+    country = if_else(
+      str_detect(country, "españa"), "Spain", country),
+    # Germany
+    country = if_else(
+      str_detect(country, "[Gg][Ee][Rr][Mm][Aa][Nn][Yy]"), "Germany", country),
+    # UAE - assuming typo
+    country = if_else(
+      str_detect(country, "EUA"), "UAE", country),
+    # the netherlands
+    country = if_else(
+      str_detect(country, "[Nn][Ee][Tt][Hh][Ee][Rr][Ll][Aa][Nn][Dd]"), "The Netherlands", country),
+    country = if_else(
+      str_detect(country, "[Hh][Oo][Ll][Ll][Aa][Nn][Dd]"), "The Netherlands", country)
+  ) 
 
+candy %>% distinct(country)
+test %>% distinct(country) %>% view()
 
-
-test <- candy %>% 
-  for(i in 1:length(usa_patterns)) {
-    if( 
-      str_detect(candy$country, usa_patterns[[i]])
-    ) {
-      mutate(country = "USA")
-      }
-  }
-new_list <-
-
-test <- candy %>% 
-  for(i in 1:length(usa_patterns)) {
-    if( 
-      str_detect(candy$country, usa_patterns[[i]])
-    ) {
-      new_list <- paste("USA")
-    } else {
-      new_list <- paste(country)
-    }
-  }
-
-new_list
-
-test <- candy %>% 
-  for(i in 1:length(usa_patterns)) {
-    filter(country %in% usa_patterns[[1]]) %>% 
-      mutate(country = "USA")
-  }
-
-num <- c(1:length(usa_patterns))
-
-usa_patterns[[1]]
-
-for(i in 1:length(usa_patterns)) {
-  print(i)
-}
-
-candy %>% 
-grepl("[Uu][a-zA-Z]+ [Ss][a-zA-Z]+", "country")
-
-candy$country %in% "[Uu][a-zA-Z]+ [Ss][a-zA-Z]+"
-
-# Edit to Canada
-canada_patterns <- c(
-  "[Cc][Aa][Nn][Aa][Dd][Aa]",
-  "Canada`"
-)
-
-# Edit to UK
-uk_patterns <- c(
-  # United Kingdom and misspellings
-  "[Uu][a-zA-Z]+ [Kk][a-zA-Z]+",
-  # UK, uk, etc.
-  "^[Uu][Kk][a-zA-Z:punct]*",
-  # U.K, u.k.
-  "[Uu]\\.[Kk]",
-  # England and endland
-  "[Ee]n[a-z]land"
-)
-
-# Edit to France
-france_patterns <- c(
-  "[Ff][Rr][Aa][Nn][Cc][Ee]"
-)
-
-# Edit to Spain
-spain_patterns <- c(
-  "[Ss]pain"
-)
 
 # --------------
-# Remove any excess/uncleaned names
+# NA any excess/uncleaned names
 # --------------
 
 clean_country_list <- c(
-  "USA", "Canada", "France", "UK", "UAE", "Mexico", "Netherlands", "Costa Rica", "Greece", "Korea", "Australia", "Japan", "Iceland", "Denmark", "Switzerland", "South Korea", "Germany", "Singapore", "Taiwan", "China", "Spain"
+  "USA", "Canada", "France", "UK", "UAE", "Mexico", "Netherlands", "Costa Rica", "Greece", "Korea", "Australia", "Japan", "Iceland", "Denmark", "Switzerland", "South Korea", "Germany", "Singapore", "Taiwan", "China", "Spain", "Ireland", "South africa", "belgium", "croatia", "Portugal", "Panama", "hungary", "Austria", "New Zealand", "Brasil", "Philippines", "sweden", "Finland", 'kenya'
 )
+
+
+length(clean_country_list)
 
 
 # --------------

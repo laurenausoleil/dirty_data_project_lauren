@@ -43,13 +43,42 @@ candy %>%
 # For each of joy, despair and meh, which candy bar revived the most of these ratings?
 
 ```{r}
+candy %>% 
+  group_by(candy) %>% 
+  summarise(num_joy = sum(reaction == "JOY")) %>% 
+  arrange(desc(num_joy)) %>% 
+  head(10)
 
+candy %>% 
+  group_by(candy) %>% 
+  summarise(num_despair = sum(reaction == "DESPAIR")) %>% 
+  arrange(desc(num_despair)) %>% 
+  head(10)
+
+candy %>% 
+  group_by(candy) %>% 
+  summarise(num_meh = sum(reaction == "MEH")) %>% 
+  arrange(desc(num_meh)) %>% 
+  head(10)
 ```
-
 
 # How many people rated Starburst as despair?
 
+..... raters rated Starburst with a despair reaction.
+
+```{r}
+candy %>% 
+  filter(candy == "Starburst" &
+         reaction == "DESPAIR") %>% 
+  summarise(num_rating_starburst_as_despair = n())
+```
+
 # For the next three questions, count despair as -1, joy as +1 and meh as 0.
+
+```{r}
+
+```
+
 
 # What was the most popular candy bar by this rating system for each gender in the dataset?
 

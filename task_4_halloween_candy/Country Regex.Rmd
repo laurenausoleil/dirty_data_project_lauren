@@ -1,0 +1,109 @@
+---
+title: "Country Regex"
+output: html_notebook
+---
+
+
+# Edit to USA
+usa_patterns <- c(
+  # United States and misspellings of united states
+  "[Uu][a-zA-Z]+ [Ss][a-zA-Z]+",
+  # USA, us, usa, US, etc.
+  "^[Uu][Ss][a-zA-Z:punct:]*",
+  # america, murica, Amerca
+  "m.+ca",
+  # U.S.A, u.s.
+  "[Uu]\\.[Ss]",
+  # u s a
+  "u s a"
+  # murrika
+)
+
+# Edit to Canada
+canada_patterns <- c(
+  "[Cc][Aa][Nn][Aa][Dd][Aa]",
+  "Canada`"
+)
+
+# Edit to UK
+uk_patterns <- c(
+  # United Kingdom and misspellings
+  "[Uu][a-zA-Z]+ [Kk][a-zA-Z]+",
+  # UK, uk, etc.
+  "^[Uu][Kk][a-zA-Z:punct]*",
+  # U.K, u.k.
+  "[Uu]\\.[Kk]",
+  # England and endland
+  "[Ee]n[a-z]land"
+)
+
+# Edit to France
+france_patterns <- c(
+  "[Ff][Rr][Aa][Nn][Cc][Ee]"
+)
+
+# Edit to Spain
+spain_patterns <- c(
+  "[Ss]pain"
+)
+
+
+ ----------------------------
+# Attempts at loop
+ -------------------------
+
+test <- candy %>% 
+  for(i in 1:length(usa_patterns)) {
+    if( 
+      str_detect(candy$country, usa_patterns[[i]])
+    ) {
+      mutate(country = "USA")
+      }
+  }
+  
+  
+  
+new_list <-
+
+test <- candy %>% 
+  for(i in 1:length(usa_patterns)) {
+    if( 
+      str_detect(candy$country, usa_patterns[[i]])
+    ) {
+      new_list <- paste("USA")
+    } else {
+      new_list <- paste(country)
+    }
+  }
+
+new_list
+
+test <- candy %>% 
+  for(i in 1:length(usa_patterns)) {
+    filter(country %in% usa_patterns[[1]]) %>% 
+      mutate(country = "USA")
+  }
+
+num <- c(1:length(usa_patterns))
+
+usa_patterns[[1]]
+
+for(i in 1:length(usa_patterns)) {
+  print(i)
+}
+
+candy %>% 
+grepl("[Uu][a-zA-Z]+ [Ss][a-zA-Z]+", "country")
+
+candy$country %in% "[Uu][a-zA-Z]+ [Ss][a-zA-Z]+"
+
+for(i in 1:length(usa_patterns){
+  test <- candy %>% 
+    mutate(
+      test$country = if_else(
+        str_detect(test$country , usa_patterns[[i]]),
+        "USA",
+        test$country
+      )
+    )
+}

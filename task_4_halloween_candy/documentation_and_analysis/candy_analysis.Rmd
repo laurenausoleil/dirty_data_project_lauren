@@ -46,20 +46,23 @@ candy %>%
 candy %>% 
   group_by(candy) %>% 
   summarise(num_joy = sum(reaction == "JOY")) %>% 
-  arrange(desc(num_joy)) %>% 
-  head(10)
+  slice_max(num_joy)
+```
 
+
+```{r}
 candy %>% 
   group_by(candy) %>% 
   summarise(num_despair = sum(reaction == "DESPAIR")) %>% 
-  arrange(desc(num_despair)) %>% 
-  head(10)
+  slice_max(num_despair)
+```
 
+
+```{r}
 candy %>% 
   group_by(candy) %>% 
   summarise(num_meh = sum(reaction == "MEH")) %>% 
-  arrange(desc(num_meh)) %>% 
-  head(10)
+  slice_max(num_meh)
 ```
 
 # Q4:How many people rated Starburst as despair?
@@ -91,16 +94,77 @@ rated_candy <- candy %>%
 
 ```{r}
 # Get a rating for each candy bar by each gender, name this "rank"
-rated_candy %>% 
+gender_rated_candy <- rated_candy %>% 
   group_by(gender, candy) %>% 
-  mutate(rank = sum(numeric_rating)) %>% 
-# Return highest ranked candy for each gender
-  ungroup() %>% 
-  group_by(gender) %>% 
-  summarise(max_rated = max(rank))
+  mutate(rank = sum(numeric_rating))
 ```
 
 
+```{r}
+# Return highest ranked candy for male
+gender_rated_candy %>% 
+  select(candy, gender, rank) %>% 
+  filter(gender == "Male") %>%
+  slice_max(rank)
+```
+
+
+```{r}
+# Return highest ranked candy for female
+gender_rated_candy %>% 
+  select(candy, gender, rank) %>% 
+  filter(gender == "Female") %>%
+  slice_max(rank)
+```
+
+
+```{r}
+# Return highest ranked candy for other genders
+gender_rated_candy %>% 
+  select(candy, gender, rank) %>% 
+  filter(gender == "Other") %>%
+  slice_max(rank)
+```
+
+
+```{r}
+# Return highest ranked candy for NA genders
+gender_rated_candy %>% 
+  select(candy, gender, rank) %>% 
+  filter(is.na(gender)) %>%
+  slice_max(rank)
+```
+
 # Q7: What was the most popular candy bar in each year?
 
+```{r}
+# Highest ranked 2015
+rated_candy %>% 
+  filter(year == 2015) %>% 
+  group_by(candy) %>% 
+  summarise(rank = sum(numeric_rating)) %>% 
+  arrange(desc(rank)) %>% 
+  head(1)
+```
+```{r}
+# Highest ranked 2016
+rated_candy %>% 
+  filter(year == 2016) %>% 
+  group_by(candy) %>% 
+  summarise(rank = sum(numeric_rating)) %>% 
+  arrange(desc(rank)) %>% 
+  head(1)
+```
+
+```{r}
+# Highest ranked 2017
+rated_candy %>% 
+  filter(year == 2017) %>% 
+  group_by(candy) %>% 
+  summarise(rank = sum(numeric_rating)) %>% 
+  arrange(desc(rank)) %>% 
+  head(1)
+```
+
 # Q8: What was the most popular candy bar by this rating for people in US, Canada, UK and all other countries?
+

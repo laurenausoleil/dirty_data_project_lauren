@@ -48,14 +48,15 @@ candy_2017 <- candy_2017 %>%
          reaction)
 
 # --------------
-# Clean up variable names to enable join
+# Clean up variable names and add year column to enable join
 # --------------
 
 candy_2015 <- candy_2015 %>% 
   rename(
     "age" = "How old are you?",
     "treating" = "Are you going actually going trick or treating yourself?",
-  )
+  ) %>% 
+  mutate(year = 2015)
 
 candy_2016 <- candy_2016 %>% 
   rename(
@@ -63,7 +64,8 @@ candy_2016 <- candy_2016 %>%
     "treating" = "Are you going actually going trick or treating yourself?",
     "gender" = "Your gender:",
     "country" = "Which country do you live in?"
-  )
+  ) %>% 
+  mutate(year = 2016)
 
 candy_2017 <- candy_2017 %>% 
   rename(
@@ -71,7 +73,8 @@ candy_2017 <- candy_2017 %>%
     "treating" = "Q1: GOING OUT?",
     "gender" = "Q2: GENDER",
     "country" = "Q4: COUNTRY"
-  )
+  ) %>% 
+  mutate(year = 2017)
 
 # --------------
 # Clean up candy values

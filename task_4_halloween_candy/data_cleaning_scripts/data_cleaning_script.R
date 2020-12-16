@@ -106,15 +106,6 @@ candy <- candy_2017 %>%
 # Clean country column values
 # --------------
 
-
-mutate(
-  test$country = if_else(
-    str_detect(test$country , usa_patterns[[i]]),
-    "USA",
-    test$country
-  )
-)
-
 candy <- candy %>% 
 # Edit to USA
   mutate(country = if_else(

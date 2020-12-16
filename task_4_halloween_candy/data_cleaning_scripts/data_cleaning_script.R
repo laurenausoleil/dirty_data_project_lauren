@@ -59,7 +59,7 @@ candy_2015 <- candy_2015 %>%
 
 candy_2016 <- candy_2016 %>% 
   rename(
-    "age" = "",
+    "age" = "How old are you?",
     "treating" = "Are you going actually going trick or treating yourself?",
     "gender" = "Your gender:",
     "country" = "Which country do you live in?"
@@ -95,7 +95,9 @@ candy_2016 <- candy_2016 %>%
 
 candy <- candy_2017 %>% 
   bind_rows(candy_2016) %>% 
-  bind_rows(candy_2015)
+  bind_rows(candy_2015) %>% 
+  # convert age to numeric to enable analysis
+  mutate(age = as.numeric(age))
 
 # --------------
 # Clean country column values
@@ -115,6 +117,50 @@ usa_patterns <- c(
   "u s a"
   # murrika
 )
+
+
+
+test <- candy %>% 
+  for(i in 1:length(usa_patterns)) {
+    if( 
+      str_detect(candy$country, usa_patterns[[i]])
+    ) {
+      mutate(country = "USA")
+      }
+  }
+new_list <-
+
+test <- candy %>% 
+  for(i in 1:length(usa_patterns)) {
+    if( 
+      str_detect(candy$country, usa_patterns[[i]])
+    ) {
+      new_list <- paste("USA")
+    } else {
+      new_list <- paste(country)
+    }
+  }
+
+new_list
+
+test <- candy %>% 
+  for(i in 1:length(usa_patterns)) {
+    filter(country %in% usa_patterns[[1]]) %>% 
+      mutate(country = "USA")
+  }
+
+num <- c(1:length(usa_patterns))
+
+usa_patterns[[1]]
+
+for(i in 1:length(usa_patterns)) {
+  print(i)
+}
+
+candy %>% 
+grepl("[Uu][a-zA-Z]+ [Ss][a-zA-Z]+", "country")
+
+candy$country %in% "[Uu][a-zA-Z]+ [Ss][a-zA-Z]+"
 
 # Edit to Canada
 canada_patterns <- c(
@@ -139,7 +185,7 @@ france_patterns <- c(
   "[Ff][Rr][Aa][Nn][Cc][Ee]"
 )
 
-# Edit to Spaing
+# Edit to Spain
 spain_patterns <- c(
   "[Ss]pain"
 )
@@ -157,6 +203,6 @@ clean_country_list <- c(
 # Write cleaned csv
 # --------------
 
-# candy %>% 
-  write_csv(here("clean_data/clean_candy_2015_to_2017"))
+candy %>% 
+  write_csv(here("clean_data/clean_candy_2015_to_2017.csv"))
 

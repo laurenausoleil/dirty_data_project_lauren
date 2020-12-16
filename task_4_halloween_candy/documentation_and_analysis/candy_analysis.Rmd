@@ -1,0 +1,49 @@
+---
+title: "candy_analysis"
+author: "Lauren Davidson"
+date: "15/12/2020"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(here)
+
+candy <- read_csv(here("clean_data/clean_candy_2015_to_2017.csv"))
+```
+
+# What is the total number of candy ratings given across the three years. (number of candy ratings, not number of raters. Don’t count missing values)
+808,312 ratings of Hallowe'en treats across the three years. Treats reviewed include non-candy snacks and gifts
+
+```{r}
+# Count number of values as I have dropped non-treat questions and NA reaction
+candy %>% 
+  summarise(num_candy_ratings = n())
+```
+
+# What was the average age of people who are going out trick or treating and the average age of people not going trick or treating?
+
+Those going out trick or treating have an average age of 35 years.
+Those staying in have an average age of 39 years.
+The average age for the dataset is 38, which is not exactly the age we expect of trick and treaters and candy eaters.
+
+```{r}
+candy %>% 
+#  group_by(treating) %>% 
+  summarise(average_age = mean(age, na.rm = TRUE))
+```
+
+
+# For each of joy, despair and meh, which candy bar revived the most of these ratings?
+
+
+
+# How many people rated Starburst as despair?
+
+# For the next three questions, count despair as -1, joy as +1 and meh as 0.
+
+# What was the most popular candy bar by this rating system for each gender in the dataset?
+
+# What was the most popular candy bar in each year?
+
+# What was the most popular candy bar by this rating for people in US, Canada, UK and all other countries?

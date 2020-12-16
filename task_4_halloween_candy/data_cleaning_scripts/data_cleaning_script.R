@@ -112,7 +112,7 @@ mutate(
   )
 )
 
-test <- candy %>% 
+candy <- candy %>% 
 # Edit to USA
   mutate(country = if_else(
     # United States and misspellings of united states
@@ -168,20 +168,27 @@ test <- candy %>%
       str_detect(country, "[Hh][Oo][Ll][Ll][Aa][Nn][Dd]"), "The Netherlands", country)
   ) 
 
-candy %>% distinct(country)
-test %>% distinct(country) %>% view()
-
-
 # --------------
 # NA any excess/uncleaned names
 # --------------
 
+# Identify clean countries
 clean_country_list <- c(
-  "USA", "Canada", "France", "UK", "UAE", "Mexico", "Netherlands", "Costa Rica", "Greece", "Korea", "Australia", "Japan", "Iceland", "Denmark", "Switzerland", "South Korea", "Germany", "Singapore", "Taiwan", "China", "Spain", "Ireland", "South africa", "belgium", "croatia", "Portugal", "Panama", "hungary", "Austria", "New Zealand", "Brasil", "Philippines", "sweden", "Finland", 'kenya'
+  "USA", "Canada", "France", "UK", "UAE", "Mexico", "The Netherlands", "Costa Rica", "Greece", "Korea", "Australia", "Japan", "Iceland", "Denmark", "Switzerland", "South Korea", "Germany", "Singapore", "Taiwan", "China", "Spain", "Ireland", "South africa", "belgium", "croatia", "Portugal", "Panama", "hungary", "Austria", "New Zealand", "Brasil", "Philippines", "sweden", "Finland", 'kenya'
 )
 
+# NA countries outwith clean list
 
-length(clean_country_list)
+candy %>% 
+  mutate(country = if_else(
+    (country %in% clean_country_list),
+    country,
+    "NA"
+    ),
+    country = na_if(country, "NA")
+  )
+
+
 
 
 # --------------

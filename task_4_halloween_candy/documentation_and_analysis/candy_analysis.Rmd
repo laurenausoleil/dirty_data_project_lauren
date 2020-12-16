@@ -95,6 +95,8 @@ rated_candy %>%
   group_by(gender, candy) %>% 
   mutate(rank = sum(numeric_rating)) %>% 
 # Return highest ranked candy for each gender
+  ungroup() %>% 
+  group_by(gender) %>% 
   summarise(max_rated = max(rank))
 ```
 

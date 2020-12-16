@@ -188,9 +188,6 @@ candy %>%
     country = na_if(country, "NA")
   )
 
-
-
-
 # --------------
 # Write cleaned csv
 # --------------

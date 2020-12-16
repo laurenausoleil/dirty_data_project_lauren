@@ -7,6 +7,16 @@ output: html_notebook
 
 * Clean country names. (if janitor before pivot, more efficient?)
 
+* Explore why ages are in country column
+
+* Find a way to for loop country name cleaning
+
+* Neaten up NA non-country
+
+* Remove extra questions from pivot
+
+* Better job cleaning ages to keep more values
+
 * Analysis questions
 
 * Readme

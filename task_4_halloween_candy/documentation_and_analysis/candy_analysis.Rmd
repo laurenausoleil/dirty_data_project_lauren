@@ -35,7 +35,7 @@ candy %>%
   summarise(average_age = mean(age, na.rm = TRUE))
 
 candy %>% 
-  filter(age < 120 & age > 0)
+  filter(age < 120 & age > 0) %>% 
   summarise(average_age = mean(age, na.rm = TRUE))
 ```
 

@@ -188,6 +188,12 @@ candy %>%
     country = na_if(country, "NA")
   )
 
+# NA rather not say gender (this is the same as not providing an answer)
+
+candy <- candy %>% 
+  mutate(gender = na_if(gender, "I'd rather not say")) %>% 
+  group_by(gender)
+
 # --------------
 # Write cleaned csv
 # --------------

@@ -14,7 +14,7 @@ candy_2017 <- read_excel("task_4_halloween_candy/raw_data/boing-boing-candy-2017
 # --------------
 # Pivot tables wider to get one row per observation
 # --------------
-
+# 2015
 candy_2015 <- candy_2015 %>% 
   # Select columns to exclude non-candy questions
   pivot_longer(cols = 4:124, names_to = "candy", values_to = "reaction") %>% 
@@ -27,6 +27,7 @@ candy_2015 <- candy_2015 %>%
          candy, 
          reaction)
 
+# 2016
 candy_2016 <- candy_2016 %>% 
   pivot_longer(cols = 7:106, names_to = "candy", values_to = "reaction") %>% 
   drop_na(reaction) %>% 
@@ -37,6 +38,7 @@ candy_2016 <- candy_2016 %>%
          candy, 
          reaction)
 
+# 2017
 candy_2017 <- candy_2017 %>% 
   pivot_longer(cols = 7:109, names_to = "candy", values_to = "reaction", names_prefix = "Q6 \\| ") %>% 
   drop_na(reaction) %>% 
@@ -50,7 +52,7 @@ candy_2017 <- candy_2017 %>%
 # --------------
 # Clean up variable names and add year column to enable join
 # --------------
-
+# 2015
 candy_2015 <- candy_2015 %>% 
   rename(
     "age" = "How old are you?",
@@ -58,6 +60,7 @@ candy_2015 <- candy_2015 %>%
   ) %>% 
   mutate(year = 2015)
 
+# 2016
 candy_2016 <- candy_2016 %>% 
   rename(
     "age" = "How old are you?",
@@ -67,6 +70,7 @@ candy_2016 <- candy_2016 %>%
   ) %>% 
   mutate(year = 2016)
 
+# 2017
 candy_2017 <- candy_2017 %>% 
   rename(
     "age" = "Q3: AGE",
@@ -77,9 +81,8 @@ candy_2017 <- candy_2017 %>%
   mutate(year = 2017)
 
 # --------------
-# Clean up candy values
+# Clean up candy values to enable join
 # --------------
-
 # Remove square brackets from candy name in 2015 and 2016
 candy_2015 <- candy_2015 %>% 
   mutate(
@@ -95,7 +98,6 @@ candy_2016 <- candy_2016 %>%
 # --------------
 # Joining tables
 # --------------
-
 candy <- candy_2017 %>% 
   bind_rows(candy_2016) %>% 
   bind_rows(candy_2015) %>% 
@@ -105,11 +107,11 @@ candy <- candy_2017 %>%
 # --------------
 # Clean country column values
 # --------------
-
 candy <- candy %>% 
 # Edit to USA
-  mutate(country = if_else(
+  mutate(
     # United States and misspellings of united states
+    country = if_else(
     str_detect(country, "[Uu][a-zA-Z]+ [Ss][a-zA-Z]+"), "USA", country),
     # USA, us, usa, US, etc.
     country = if_else(
@@ -146,25 +148,19 @@ candy <- candy %>%
 # --------------
 # NA any excess/uncleaned names
 # --------------
-
 # Identify clean countries
 clean_country_list <- c(
   "USA", "Canada", "France", "UK", "UAE", "Mexico", "The Netherlands", "Costa Rica", "Greece", "Korea", "Australia", "Japan", "Iceland", "Denmark", "Switzerland", "South Korea", "Germany", "Singapore", "Taiwan", "China", "Spain", "Ireland", "South africa", "belgium", "croatia", "Portugal", "Panama", "hungary", "Austria", "New Zealand", "Brasil", "Philippines", "sweden", "Finland", 'kenya'
 )
 
 # NA countries outwith clean list
-
 candy %>% 
   mutate(country = if_else(
-    (country %in% clean_country_list),
-    country,
-    "NA"
-    ),
+    (country %in% clean_country_list), country, "NA"),
     country = na_if(country, "NA")
   )
 
 # NA rather not say gender (this is the same as not providing an answer)
-
 candy <- candy %>% 
   mutate(gender = na_if(gender, "I'd rather not say")) %>% 
   group_by(gender)
@@ -172,6 +168,5 @@ candy <- candy %>%
 # --------------
 # Write cleaned csv
 # --------------
-
 candy %>% 
   write_csv(here("task_4_halloween_candy/clean_data/clean_candy_2015_to_2017.csv"))

@@ -88,22 +88,19 @@ rated_candy <- candy %>%
 
 
 # Q6: What was the most popular candy bar by this rating system for each gender in the dataset?
-
-```{r}
-candy %>%
-  group_by(reaction, candy) %>%
-  summarise(num_ratings = n()) %>%
-  group_by(reaction) %>%
-  slice_max(num_ratings)
-```
-
+Female: 'Any full-sized candy bar'
+Male: 'Any full-sized candy bar'
+Other: 'Any full-sized candy bar'
+NA: 'Any full-sized candy bar'
 
 ```{r}
 rated_candy %>% 
   group_by(gender, candy) %>% 
   # Get a rating for each candy bar by each gender, name this "rank"
-  summarise(rank = sum(numeric_rating)) %>% 
+  summarise(rank = sum(numeric_rating), avg_rating = mean(numeric_rating)) %>% 
+  # Group by gender to get a table containing all genders as rows
   group_by(gender) %>% 
+  # Slice to return only the highest result
   slice_max(rank)
 ```
 

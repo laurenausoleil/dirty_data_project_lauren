@@ -29,11 +29,11 @@ candy %>%
 
 Those going out trick or treating have an average age of 35 years.
 Those staying in have an average age of 39 years.
-The average age for the dataset is 42, which is not exactly the age we expect of trick and treaters and candy eaters. This also implies that older respondents were less likely to answer the question about whether they were going out!
+The average age for the dataset is 38, which is not exactly the age we expect of trick and treaters and candy eaters.
 
 ```{r}
 candy %>% 
-  # Remove ages which are likely to be joke or answers or typos
+  # Remove ages which are likely to be joke answers or typos
   filter(age < 120 & age > 0) %>% 
   group_by(treating) %>% 
   summarise(average_age = mean(age, na.rm = TRUE))

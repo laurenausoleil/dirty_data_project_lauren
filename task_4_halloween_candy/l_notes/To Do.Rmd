@@ -3,25 +3,8 @@ title: "To Do"
 output: html_notebook
 ---
 
-* Remove questions for non-treats from 
-
-* Readme
-
-* Neaten up data cleaning script and analysis
-
 * Explore why ages are in country column
 
 * Find a way to for loop country name cleaning
 
-* Neaten up NA non-country
-
-* Remove extra questions from pivot
-
-* Remove non-candy entries from candy column
-
 * Better job cleaning ages to keep more values
-
-* Find a more efficient way to do most popular candy by var (country, gender, year)
-    a function? tabyl?
-
-* Any extra analysis

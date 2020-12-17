@@ -3,11 +3,7 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-# 1.4.1 Some cleaning hints
-You’ll need to combine these three datasets together.
-The column country is particularly messy, you will likely need to do some ‘hard coding’ here!
-
-# 1.4.2 Analysis questions
+# Analysis questions
 What is the total number of candy ratings given across the three years. (number of candy ratings, not number of raters. Don’t count missing values)
 
 What was the average age of people who are going out trick or treating and the average age of people not going trick or treating?

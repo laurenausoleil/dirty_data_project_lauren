@@ -62,9 +62,9 @@ candy %>%
 ```
 
 
-# Q4:How many people rated Starburst as despair?
+# Q4: How many people rated Starburst as despair?
 
-..... raters rated Starburst with a despair reaction.
+1990 people rated Starburst with a despair reaction.
 
 ```{r}
 candy %>% 
@@ -103,6 +103,20 @@ rated_candy %>%
   # Slice to return only the highest result
   slice_max(score)
 ```
+
+# Q7: What was the most popular candy bar in each year?
+2015: 'Any full-sized candy bar'
+2016: 'Any full-sized candy bar'
+2017: 'Any full-sized candy bar'
+
+```{r}
+rated_candy %>% 
+  group_by(candy, year) %>% 
+  summarise(score = sum(numeric_rating), avg_rating = mean(numeric_rating)) %>% 
+  group_by(year) %>% 
+  slice_max(score)
+```
+
 
 # Q8: What was the most popular candy bar by this rating for people in US, Canada, UK and all other countries?
 Most popular US: 'Any full-sized candy bar'

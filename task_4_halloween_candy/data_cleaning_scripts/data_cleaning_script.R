@@ -140,26 +140,7 @@ candy <- candy %>%
       str_detect(country, "[Uu]\\.[Kk]"), "UK", country),
     # England and endland
     country = if_else(
-      str_detect(country, "[Ee]n[a-z]land"), "UK", country),
-    # France
-    country = if_else(
-      str_detect(country, "[Ff][Rr][Aa][Nn][Cc][Ee]"), "France", country),
-    # Spain
-    country = if_else(
-      str_detect(country, "[Ss]pain"), "Spain", country),
-    country = if_else(
-      str_detect(country, "españa"), "Spain", country),
-    # Germany
-    country = if_else(
-      str_detect(country, "[Gg][Ee][Rr][Mm][Aa][Nn][Yy]"), "Germany", country),
-    # UAE - assuming typo
-    country = if_else(
-      str_detect(country, "EUA"), "UAE", country),
-    # the netherlands
-    country = if_else(
-      str_detect(country, "[Nn][Ee][Tt][Hh][Ee][Rr][Ll][Aa][Nn][Dd]"), "The Netherlands", country),
-    country = if_else(
-      str_detect(country, "[Hh][Oo][Ll][Ll][Aa][Nn][Dd]"), "The Netherlands", country)
+      str_detect(country, "[Ee]n[a-z]land"), "UK", country)
   ) 
 
 # --------------

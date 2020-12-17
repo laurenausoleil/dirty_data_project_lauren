@@ -173,4 +173,4 @@ candy <- candy %>%
 # Write cleaned csv
 # --------------
 candy %>% 
-  write_csv(here("task_4_halloween_candy/clean_data/clean_candy_2015_to_2017.csv"))
+  write_csv(here("clean_data/clean_candy_2015_to_2017.csv"))

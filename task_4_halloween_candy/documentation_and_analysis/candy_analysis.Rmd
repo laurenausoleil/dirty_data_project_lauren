@@ -9,10 +9,12 @@ output: html_document
 library(tidyverse)
 library(here)
 
-candy <- read_csv(here("task_4_halloween_candy/clean_data/clean_candy_2015_to_2017.csv"))
+candy <- read_csv(here("clean_data/clean_candy_2015_to_2017.csv"))
 ```
 
 # Q1: What is the total number of candy ratings given across the three years. (number of candy ratings, not number of raters. Don’t count missing values)
+772354 = number of ratings in this dataset
+
 772354 ratings of Hallowe'en treats across the three years. Treats reviewed include non-candy snacks and gifts
 
 ```{r}
@@ -22,6 +24,8 @@ candy %>%
 ```
 
 # Q2: What was the average age of people who are going out trick or treating and the average age of people not going trick or treating?
+35 = average age of those going trick or treating
+39 = average age of those staying in
 
 Those going out trick or treating have an average age of 35 years.
 Those staying in have an average age of 39 years.
@@ -41,6 +45,13 @@ candy %>%
 
 
 # Q3: For each of joy, despair and meh, which candy bar received the most of these ratings?
+Most often rated joy: 'any full size candy bar'
+Most often rated despair: 'broken glow stick'
+Most often rated meh: 'lollipops'
+
+Our respondents are not very discriminating; they rated 'any full size candy bar' as joy the most often, 7589 times.
+A 'broken glow stick' receieved the most despair reactions, 7905 times.
+'Lollipops' are the least evocative item, receiving 1570 meh ratings.
 
 ```{r}
 candy %>%
@@ -79,8 +90,8 @@ rated_candy <- candy %>%
 # Q6: What was the most popular candy bar by this rating system for each gender in the dataset?
 
 ```{r}
-candy_data %>%
-  group_by(response, candy) %>%
+candy %>%
+  group_by(reaction, candy) %>%
   summarise(num_ratings = n()) %>%
   group_by(response) %>%
   slice_max(num_ratings)
@@ -88,10 +99,12 @@ candy_data %>%
 
 
 ```{r}
-# Get a rating for each candy bar by each gender, name this "rank"
-gender_rated_candy <- rated_candy %>% 
+rated_candy %>% 
   group_by(gender, candy) %>% 
-  mutate(rank = sum(numeric_rating))
+  # Get a rating for each candy bar by each gender, name this "rank"
+  summarise(rank = sum(numeric_rating)) %>% 
+  group_by(gender) %>% 
+  slice_max(rank)
 ```
 
 

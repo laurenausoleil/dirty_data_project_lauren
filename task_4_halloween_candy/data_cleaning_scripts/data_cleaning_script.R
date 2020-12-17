@@ -20,8 +20,12 @@ candy_2015 <- candy_2015 %>%
   pivot_longer(cols = 4:124, names_to = "candy", values_to = "reaction") %>% 
   # drop NAs in reaction - these will not be useful for analysis
   drop_na(reaction) %>% 
+  # check all reactions as expected - helps to filter out non-candy questions
   filter(reaction == "JOY" | reaction == "DESPAIR" | reaction == "MEH") %>% 
-  # Filter out questions not about candy
+  # hard code remove questions that slipped the net!
+  filter(candy != "Please list any items not included above that give you JOY.") %>% 
+  filter(candy != "Please list any items not included above that give you DESPAIR.") %>%
+  # Filter out unecessary questions
   select(`How old are you?`, 
          `Are you going actually going trick or treating yourself?`, 
          candy, 

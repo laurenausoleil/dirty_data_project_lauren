@@ -9,7 +9,7 @@ output: html_document
 library(tidyverse)
 library(here)
 
-candy <- read_csv(here("clean_data/clean_candy_2015_to_2017.csv"))
+candy <- read_csv(here("task_4_halloween_candy/clean_data/clean_candy_2015_to_2017.csv"))
 ```
 
 # Q1: What is the total number of candy ratings given across the three years. (number of candy ratings, not number of raters. Don’t count missing values)
@@ -40,7 +40,7 @@ candy %>%
 ```
 
 
-# Q3: For each of joy, despair and meh, which candy bar revived the most of these ratings?
+# Q3: For each of joy, despair and meh, which candy bar received the most of these ratings?
 
 ```{r}
 candy %>% 
@@ -93,6 +93,15 @@ rated_candy <- candy %>%
 # Q6: What was the most popular candy bar by this rating system for each gender in the dataset?
 
 ```{r}
+rated_candy %>%
+  group_by(gender, candy) %>%
+  summarise(rank = sum(numeric_rating)) %>%
+  group_by(gender) %>%
+  slice_max(rank)
+```
+
+
+```{r}
 # Get a rating for each candy bar by each gender, name this "rank"
 gender_rated_candy <- rated_candy %>% 
   group_by(gender, candy) %>% 
@@ -105,7 +114,8 @@ gender_rated_candy <- rated_candy %>%
 gender_rated_candy %>% 
   select(candy, gender, rank) %>% 
   filter(gender == "Male") %>%
-  slice_max(rank)
+  arrange(desc(rank)) %>% 
+  head(1)
 ```
 
 
@@ -114,7 +124,8 @@ gender_rated_candy %>%
 gender_rated_candy %>% 
   select(candy, gender, rank) %>% 
   filter(gender == "Female") %>%
-  slice_max(rank)
+  arrange(desc(rank)) %>% 
+  head(1)
 ```
 
 
@@ -123,7 +134,8 @@ gender_rated_candy %>%
 gender_rated_candy %>% 
   select(candy, gender, rank) %>% 
   filter(gender == "Other") %>%
-  slice_max(rank)
+  arrange(desc(rank)) %>% 
+  head(1)
 ```
 
 
@@ -132,7 +144,8 @@ gender_rated_candy %>%
 gender_rated_candy %>% 
   select(candy, gender, rank) %>% 
   filter(is.na(gender)) %>%
-  slice_max(rank)
+  arrange(desc(rank)) %>% 
+  head(1)
 ```
 
 # Q7: What was the most popular candy bar in each year?
@@ -192,7 +205,7 @@ rated_candy %>%
 ```{r}
 # Highest ranked UK
 rated_candy %>% 
-  filter(country == "UK") %>% 
+  filter(country == "UK" | country == "Ireland" | country == "Scotland") %>% 
   group_by(candy) %>% 
   summarise(rank = sum(numeric_rating)) %>% 
   arrange(desc(rank)) %>% 

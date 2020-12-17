@@ -113,13 +113,12 @@ Most popular all other countries: 'Any full-sized candy bar'
 
 ```{r}
 rated_candy %>% 
-  # Mutate all countries except USA, Canada and UK to other
+  # Mutate all countries except USA, Canada and UK to NA (best way I can find to group other countries and NA together)
   mutate(country = 
-          if_else(country == "USA" | country == "UK" | country == "Canada",
+          ifelse(country == "USA" | country == "UK" | country == "Canada",
           country,
-          "NA"
-          ),
-         country = na_if(country, "NA")
+          NA
+          )
   ) %>% 
   # find the score for each candy by country
   group_by(country, candy) %>% 
@@ -128,3 +127,25 @@ rated_candy %>%
   group_by(country) %>% 
   slice_max(score)
 ```
+
+# Maybe UK people prefer cash because they're older?
+Average age USA: 42
+Average age UK: 38
+Average age Canada: 39
+
+Apparently not, we just like cash!
+
+```{r}
+candy %>% 
+  select(country, age) %>% 
+  # Mutate all countries except USA, Canada and UK to NA (best way I can find to group other countries and NA together)
+  mutate(country = 
+          ifelse(country == "USA" | country == "UK" | country == "Canada",
+          country,
+          NA
+          )
+  ) %>% 
+  group_by(country) %>% 
+  summarise(avg_age = mean(age, na.rm = TRUE))
+```
+

@@ -158,16 +158,18 @@ clean_country_list <- c(
 )
 
 # NA countries outwith clean list
-candy %>% 
-  mutate(country = if_else(
-    (country %in% clean_country_list), country, "NA"),
-    country = na_if(country, "NA")
+candy <- candy %>% 
+  mutate(country = ifelse(
+    (country %in% clean_country_list), country, NA)
   )
 
 # NA rather not say gender (this is the same as not providing an answer)
 candy <- candy %>% 
-  mutate(gender = na_if(gender, "I'd rather not say")) %>% 
-  group_by(gender)
+  mutate(gender = na_if(gender, "I'd rather not say")) %>%
+# NA unlikely ages
+  mutate(age = 
+           ifelse(age < 0 | age > 120, NA, age)
+  )
 
 # --------------
 # Write cleaned csv

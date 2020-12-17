@@ -93,7 +93,7 @@ rated_candy <- candy %>%
 candy %>%
   group_by(reaction, candy) %>%
   summarise(num_ratings = n()) %>%
-  group_by(response) %>%
+  group_by(reaction) %>%
   slice_max(num_ratings)
 ```
 

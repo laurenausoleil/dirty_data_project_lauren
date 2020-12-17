@@ -7,20 +7,20 @@ library(readxl)
 library(janitor)
 library(here)
 
-excel_sheets("raw_data/boing-boing-candy-2015.xlsx")
-
-candy_2015 <- read_excel("raw_data/boing-boing-candy-2015.xlsx")
-candy_2016 <- read_excel("raw_data/boing-boing-candy-2016.xlsx")
-candy_2017 <- read_excel("raw_data/boing-boing-candy-2017.xlsx")
+candy_2015 <- read_excel("task_4_halloween_candy/raw_data/boing-boing-candy-2015.xlsx")
+candy_2016 <- read_excel("task_4_halloween_candy/raw_data/boing-boing-candy-2016.xlsx")
+candy_2017 <- read_excel("task_4_halloween_candy/raw_data/boing-boing-candy-2017.xlsx")
 
 # --------------
 # Pivot tables wider to get one row per observation
 # --------------
 
 candy_2015 <- candy_2015 %>% 
+  # Select columns to exclude non-candy questions
   pivot_longer(cols = 4:124, names_to = "candy", values_to = "reaction") %>% 
   # drop NAs in reaction - these will not be useful for analysis
   drop_na(reaction) %>% 
+  filter(reaction == "JOY" | reaction == "DESPAIR" | reaction == "MEH") %>% 
   # Filter out questions not about candy
   select(`How old are you?`, 
          `Are you going actually going trick or treating yourself?`, 
@@ -193,5 +193,4 @@ candy <- candy %>%
 # --------------
 
 candy %>% 
-  write_csv(here("clean_data/clean_candy_2015_to_2017.csv"))
-
+  write_csv(here("task_4_halloween_candy/clean_data/clean_candy_2015_to_2017.csv"))

@@ -96,125 +96,35 @@ NA: 'Any full-sized candy bar'
 ```{r}
 rated_candy %>% 
   group_by(gender, candy) %>% 
-  # Get a rating for each candy bar by each gender, name this "rank"
-  summarise(rank = sum(numeric_rating), avg_rating = mean(numeric_rating)) %>% 
+  # Get a rating for each candy bar by each gender, name this "score"
+  summarise(score = sum(numeric_rating), avg_rating = mean(numeric_rating)) %>% 
   # Group by gender to get a table containing all genders as rows
   group_by(gender) %>% 
   # Slice to return only the highest result
-  slice_max(rank)
-```
-
-
-```{r}
-# Return highest ranked candy for male
-gender_rated_candy %>% 
-  select(candy, gender, rank) %>% 
-  filter(gender == "Male") %>%
-  arrange(desc(rank)) %>% 
-  head(1)
-```
-
-
-```{r}
-# Return highest ranked candy for female
-gender_rated_candy %>% 
-  select(candy, gender, rank) %>% 
-  filter(gender == "Female") %>%
-  arrange(desc(rank)) %>% 
-  head(1)
-```
-
-
-```{r}
-# Return highest ranked candy for other genders
-gender_rated_candy %>% 
-  select(candy, gender, rank) %>% 
-  filter(gender == "Other") %>%
-  arrange(desc(rank)) %>% 
-  head(1)
-```
-
-
-```{r}
-# Return highest ranked candy for NA genders
-gender_rated_candy %>% 
-  select(candy, gender, rank) %>% 
-  filter(is.na(gender)) %>%
-  arrange(desc(rank)) %>% 
-  head(1)
-```
-
-# Q7: What was the most popular candy bar in each year?
-
-```{r}
-# Highest ranked 2015
-rated_candy %>% 
-  filter(year == 2015) %>% 
-  group_by(candy) %>% 
-  summarise(rank = sum(numeric_rating)) %>% 
-  arrange(desc(rank)) %>% 
-  head(1)
-```
-```{r}
-# Highest ranked 2016
-rated_candy %>% 
-  filter(year == 2016) %>% 
-  group_by(candy) %>% 
-  summarise(rank = sum(numeric_rating)) %>% 
-  arrange(desc(rank)) %>% 
-  head(1)
-```
-
-```{r}
-# Highest ranked 2017
-rated_candy %>% 
-  filter(year == 2017) %>% 
-  group_by(candy) %>% 
-  summarise(rank = sum(numeric_rating)) %>% 
-  arrange(desc(rank)) %>% 
-  head(1)
+  slice_max(score)
 ```
 
 # Q8: What was the most popular candy bar by this rating for people in US, Canada, UK and all other countries?
-
-```{r}
-# Highest ranked US
-rated_candy %>% 
-  filter(country == "USA") %>% 
-  group_by(candy) %>% 
-  summarise(rank = sum(numeric_rating)) %>% 
-  arrange(desc(rank)) %>% 
-  head(1)
-```
+Most popular US: 'Any full-sized candy bar'
+MOst popular Canada: 'Any full-sized candy bar'
+Most popular UK: 'Cash, or other forms of legal tender'
+Most popular all other countries: 'Any full-sized candy bar'
 
 
 ```{r}
-# Highest ranked Canada
 rated_candy %>% 
-  filter(country == "Canada") %>% 
-  group_by(candy) %>% 
-  summarise(rank = sum(numeric_rating)) %>% 
-  arrange(desc(rank)) %>% 
-  head(1)
-```
-
-```{r}
-# Highest ranked UK
-rated_candy %>% 
-  filter(country == "UK" | country == "Ireland" | country == "Scotland") %>% 
-  group_by(candy) %>% 
-  summarise(rank = sum(numeric_rating)) %>% 
-  arrange(desc(rank)) %>% 
-  head(1)
-```
-
-
-```{r}
-# Highest ranked All other countries
-rated_candy %>% 
-  filter(country != "UK" & country != "USA" & country != "Canada") %>% 
-  group_by(candy) %>% 
-  summarise(rank = sum(numeric_rating)) %>% 
-  arrange(desc(rank)) %>% 
-  head(1)
+  # Mutate all countries except USA, Canada and UK to other
+  mutate(country = 
+          if_else(country == "USA" | country == "UK" | country == "Canada",
+          country,
+          "NA"
+          ),
+         country = na_if(country, "NA")
+  ) %>% 
+  # find the score for each candy by country
+  group_by(country, candy) %>% 
+  summarise(score = sum(numeric_rating), avg_rating = mean(numeric_rating)) %>% 
+  # Group by country to return a table showing rank by country
+  group_by(country) %>% 
+  slice_max(score)
 ```

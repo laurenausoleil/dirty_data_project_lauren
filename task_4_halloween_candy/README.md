@@ -20,8 +20,7 @@ An R.proj within a GitHub repository https://github.com/laurenausoleil/dirty\_da
 	* Assigns NA to unclear variables (see Assumptions below)
 2. documentation\_and\_analysis/
 	* Answers analysis questions on cleaned data
-3. notes
-	* A copy of the project requirements
+	* A copy of the project brief
 
 ## Data
 

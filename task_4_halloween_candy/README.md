@@ -48,11 +48,36 @@ For age, I used R's built in as.numeric() function to translate text to a numeri
 **772354** ratings of Hallowe'en treats across the three years.
 Treats rated include non-candy snacks and gifts.
 
+<details>
+  <summary>Code</summary>
+
+```{r}
+# Count number of values as I have dropped non-treat questions and NA reaction
+candy %>% 
+  summarise(num_candy_ratings = n())
+```  
+ 
+</details>
+
 ##### Q2: What was the average age of people who are going out trick or treating and the average age of people not going trick or treating?
 Those **going out** trick or treating have an average age of **35** years.       
 Those **staying in** have an average age of **39** years.  
 
 The average age for the dataset is 38, which is not exactly the age we expect of trick and treaters and candy eaters.
+
+<details>
+  <summary>Code</summary>
+
+```{r}
+candy %>% 
+  group_by(treating) %>% 
+  summarise(average_age = mean(age, na.rm = TRUE))
+
+candy %>% 
+  summarise(average_age = mean(age, na.rm = TRUE))
+``` 
+ 
+</details>
 
 ##### Q3: For each of joy, despair and meh, which candy bar received the most of these ratings?
 
@@ -64,20 +89,95 @@ Our respondents are not very discriminating; they rated 'any full size candy bar
 A 'broken glow stick' receieved the most despair reactions, 7905 times.
 'Lollipops' are the least evocative item, receiving 1570 meh ratings.
 
+<details>
+  <summary>Code</summary>
+
+```{r}
+candy %>%
+  group_by(reaction, candy) %>%
+  summarise(rating_count = n()) %>%
+  group_by(reaction) %>%
+  slice_max(rating_count)
+``` 
+ 
+</details>
+
 ##### Q4: How many people rated Starburst as despair?
 
 **1990** people rated Starburst with a despair reaction.
 
-##### Q6: What was the most popular candy bar by this rating system for each gender in the dataset?
+<details>
+  <summary>Code</summary>
+
+```{r}
+candy %>% 
+  filter(candy == "Starburst" &
+         reaction == "DESPAIR") %>% 
+  summarise(num_rating_starburst_as_despair = n())
+```
+ 
+</details>
+
+##### Q6: What was the most popular candy bar by the rating system for each gender in the dataset?
 **Female**: 'Any full-sized candy bar'   
 **Male**: 'Any full-sized candy bar'   
 **Other**: 'Any full-sized candy bar'   
 **NA**: 'Any full-sized candy bar'
 
+<details>
+  <summary>Code</summary>
+
+```{r}
+rated_candy <- candy %>% 
+  mutate(
+    numeric_rating = case_when(
+      reaction == "JOY" ~ 1,
+      reaction == "DESPAIR" ~ -1,
+      reaction == "MEH" ~ 0
+    )
+  )
+```
+
+```{r}
+rated_candy %>% 
+  group_by(gender, candy) %>% 
+  # Get a rating for each candy bar by each gender, name this "score"
+  summarise(score = sum(numeric_rating), avg_rating = mean(numeric_rating)) %>% 
+  # Group by gender to get a table containing all genders as rows
+  group_by(gender) %>% 
+  # Slice to return only the highest result
+  slice_max(score)
+```
+ 
+</details>
+
 ##### Q7: What was the most popular candy bar in each year?
 **2015**: 'Any full-sized candy bar'   
 **2016**: 'Any full-sized candy bar'   
 **2017**: 'Any full-sized candy bar'
+
+<details>
+  <summary>Code</summary>
+
+```{r}
+rated_candy %>% 
+  # Mutate all countries except USA, Canada and UK to NA (best way I can find to group other countries and NA together)
+  mutate(country = 
+          ifelse(country == "USA" | country == "UK" | country == "Canada",
+          country,
+          NA
+          )
+  ) %>% 
+  # find the score for each candy by country
+  group_by(country, candy) %>% 
+  summarise(score = sum(numeric_rating), avg_rating = mean(numeric_rating)) %>% 
+  # Group by country to return a table showing rank by country
+  group_by(country) %>% 
+  slice_max(score)
+```
+ 
+</details>
+
 
 ##### Q8: What was the most popular candy bar by this rating for people in US, Canada, UK and all other countries?
 **US**: 'Any full-sized candy bar'  
@@ -85,4 +185,62 @@ A 'broken glow stick' receieved the most despair reactions, 7905 times.
 **UK**: 'Cash, or other forms of legal tender'  
 **All other countries**: 'Any full-sized candy bar'
 
-People in the UK were the only group analysed who rated anything higher than 'Any full-size candy bar' as their highest. I performed some analysis to see whether UK respondents had a higher average age than other countries, but found that UK respondents had the lowest average age
+People in the UK were the only group analysed who rated anything higher than 'Any full-size candy bar' as their highest.   
+I performed some analysis to see whether UK respondents had a higher average age than other countries, but found that UK respondents had the lowest average age.   
+
+Average age **USA**: 42    
+Average age **UK**: 38   
+Average age **Canada**: 39   
+
+<details>
+  <summary>Code</summary>
+
+```{r}
+rated_candy %>% 
+  # Mutate all countries except USA, Canada and UK to NA (best way I can find to group other countries and NA together)
+  mutate(country = 
+          ifelse(country == "USA" | country == "UK" | country == "Canada",
+          country,
+          NA
+          )
+  ) %>% 
+  # find the score for each candy by country
+  group_by(country, candy) %>% 
+  summarise(score = sum(numeric_rating), avg_rating = mean(numeric_rating)) %>% 
+  # Group by country to return a table showing rank by country
+  group_by(country) %>% 
+  slice_max(score)
+```
+
+```{r}
+rated_candy %>% 
+  # Mutate all countries except USA, Canada and UK to NA (best way I can find to group other countries and NA together)
+  mutate(country = 
+          ifelse(country == "USA" | country == "UK" | country == "Canada",
+          country,
+          NA
+          )
+  ) %>% 
+  # find the score for each candy by country
+  group_by(country, candy) %>% 
+  summarise(score = sum(numeric_rating), avg_rating = mean(numeric_rating)) %>% 
+  # Group by country to return a table showing rank by country
+  group_by(country) %>% 
+  slice_max(score)
+```
+```{r}
+candy %>% 
+  select(country, age) %>% 
+  # Mutate all countries except USA, Canada and UK to NA (best way I can find to group other countries and NA together)
+  mutate(country = 
+          ifelse(country == "USA" | country == "UK" | country == "Canada",
+          country,
+          NA
+          )
+  ) %>% 
+  group_by(country) %>% 
+  summarise(avg_age = mean(age, na.rm = TRUE))
+```
+ 
+</details>
+

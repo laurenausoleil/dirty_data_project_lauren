@@ -7,9 +7,9 @@ library(readxl)
 library(janitor)
 library(here)
 
-candy_2015 <- read_excel("task_4_halloween_candy/raw_data/boing-boing-candy-2015.xlsx")
-candy_2016 <- read_excel("task_4_halloween_candy/raw_data/boing-boing-candy-2016.xlsx")
-candy_2017 <- read_excel("task_4_halloween_candy/raw_data/boing-boing-candy-2017.xlsx")
+candy_2015 <- read_excel(here("raw_data/boing-boing-candy-2015.xlsx"))
+candy_2016 <- read_excel(here("raw_data/boing-boing-candy-2016.xlsx"))
+candy_2017 <- read_excel(here("raw_data/boing-boing-candy-2017.xlsx"))
 
 # --------------
 # Pivot tables wider to get one row per observation
@@ -17,14 +17,11 @@ candy_2017 <- read_excel("task_4_halloween_candy/raw_data/boing-boing-candy-2017
 # 2015
 candy_2015 <- candy_2015 %>% 
   # Select columns to exclude non-candy questions
-  pivot_longer(cols = 4:124, names_to = "candy", values_to = "reaction") %>% 
+  pivot_longer(cols = 4:96, names_to = "candy", values_to = "reaction") %>% 
   # drop NAs in reaction - these will not be useful for analysis
   drop_na(reaction) %>% 
   # check all reactions as expected - helps to filter out non-candy questions
   filter(reaction == "JOY" | reaction == "DESPAIR" | reaction == "MEH") %>% 
-  # hard code remove questions that slipped the net!
-  filter(candy != "Please list any items not included above that give you JOY.") %>% 
-  filter(candy != "Please list any items not included above that give you DESPAIR.") %>%
   # Filter out unecessary questions
   select(`How old are you?`, 
          `Are you going actually going trick or treating yourself?`, 
